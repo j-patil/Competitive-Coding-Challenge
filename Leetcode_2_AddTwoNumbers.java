@@ -1,30 +1,38 @@
 /**
- * Definition for binary tree with next pointer.
- * public class TreeLinkNode {
+ * Definition for singly-linked list.
+ * public class ListNode {
  *     int val;
- *     TreeLinkNode left, right, next;
- *     TreeLinkNode(int x) { val = x; }
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
  * }
  */
 
-public class Solution {
-    public void connect(TreeLinkNode root) {
-        if((root == null) || (root.left== null && root.right == null)) return;
-        Queue<TreeLinkNode> q = new LinkedList<>();
-        if(root.left!= null) q.offer(root.left);
-        if(root.right!= null) q.offer(root.right);
-        while(q.size()>0) {
-            int l = q.size();
-            TreeLinkNode state = q.poll();
-            if(state.left!=null) q.offer(state.left);
-            if(state.right!=null) q.offer(state.right);
-            for(int i = 1; i< l; i++){
-                TreeLinkNode temp = q.poll();
-                state.next = temp;
-                state = temp;
-                if(state.left!=null) q.offer(state.left);
-                if(state.right!=null) q.offer(state.right);
-            }     
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+        int carry = 0;
+        ListNode temp = new ListNode(0);
+        ListNode sample = temp;
+        while(l1!=null || l2!=null){
+            
+            carry /= 10;
+            
+            if(l1!=null){
+                carry += l1.val;
+                l1 = l1.next;
+            }
+            
+            if(l2!=null){
+                carry += l2.val;
+                l2 = l2.next;
+            }
+            
+            sample.next = new ListNode(carry%10);
+            sample = sample.next;
         }
+        
+        if(carry/10 == 1) sample.next = new ListNode(1);
+        return temp.next;
     }
 }
